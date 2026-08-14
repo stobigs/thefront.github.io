@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE FRONT — Issue No.07</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400;1,6..96,500&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EFE9E1;
+    --paper-alt:#E4DCCF;
+    --ink:#1B1714;
+    --ink-soft:#3a332d;
+    --oxblood:#6E1F26;
+    --brass:#A9824F;
+    --stone:#8f867a;
+    --hair:rgba(27,23,20,0.16);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit; text-decoration:none;}
+  img,svg{display:block; max-width:100%;}
+
+  .display{ font-family:'Bodoni Moda', serif; }
+  .mono{ font-family:'Space Mono', monospace; }
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--oxblood);
+  }
+  .rule{ border:none; border-top:1px solid var(--hair); }
+  .wrap{ max-width:1280px; margin:0 auto; padding:0 clamp(20px,4vw,64px); }
+
+  /* reveal on scroll */
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .9s ease, transform .9s ease; }
+  .reveal.visible{ opacity:1; transform:translateY(0); }
+
+  /* ===== NAV ===== */
+  .masthead-nav{
+    position:sticky; top:0; z-index:40;
+    background:rgba(239,233,225,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--hair);
+  }
+  .masthead-nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:64px;
+  }
+  .nav-mark{ font-family:'Bodoni Moda', serif; font-weight:700; font-size:20px; letter-spacing:0.02em; }
+  .nav-links{ display:flex; gap:28px; }
+  .nav-links a{ font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); position:relative; padding-bottom:3px;}
+  .nav-links a::after{ content:""; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--oxblood); transition:width .3s ease;}
+  .nav-links a:hover::after{ width:100%; }
+  .nav-meta{ font-family:'Space Mono', monospace; font-size:11px; color:var(--stone); text-align:right; line-height:1.4;}
+  @media(max-width:860px){ .nav-links{display:none;} }
+
+  /* ===== HERO / COVER ===== */
+  .cover{ padding:64px 0 40px; position:relative; }
+  .cover-kicker{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:'Space Mono', monospace; font-size:11px; letter-spacing:.12em;
+    color:var(--stone); text-transform:uppercase; margin-bottom:28px;
+  }
+  .cover-grid{
+    display:grid; grid-template-columns: 1fr 1.15fr 1fr; gap:28px; align-items:center;
+  }
+  .cover-title{
+    font-family:'Bodoni Moda', serif;
+    font-weight:600;
+    font-size:clamp(52px, 9vw, 118px);
+    line-height:0.92;
+    letter-spacing:-0.01em;
+    text-align:center;
+    grid-column:1/-1;
+    margin-bottom:6px;
+  }
+  .cover-sub{
+    grid-column:1/-1; text-align:center;
+    font-size:13px; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+    margin-bottom:42px;
+  }
+  .cover-lines{ display:flex; flex-direction:column; gap:22px; }
+  .cover-lines.right{ text-align:right; }
+  .cover-line-num{ font-family:'Space Mono', monospace; font-size:11px; color:var(--brass); }
+  .cover-line-text{ font-family:'Bodoni Moda', serif; font-style:italic; font-size:19px; line-height:1.35; max-width:220px; }
+  .cover-lines.right .cover-line-text{ margin-left:auto; }
+
+  .cover-illustration{ display:flex; justify-content:center; padding:10px 0; }
+  .cover-illustration svg{ width:min(100%, 300px); height:auto; }
+
+  /* ===== TICKER ===== */
+  .ticker{
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair);
+    background:var(--ink); color:var(--paper);
+    overflow:hidden; white-space:nowrap; padding:13px 0;
+  }
+  .ticker-track{ display:inline-block; animation:scroll 26s linear infinite; }
+  .ticker-track span{
+    font-family:'Space Mono', monospace; font-size:12px; letter-spacing:.14em;
+    text-transform:uppercase; margin:0 22px; color:var(--paper);
+  }
+  .ticker-track span em{ color:var(--brass); font-style:normal; }
+  @keyframes scroll{ 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+
+  /* ===== TOC (signature) ===== */
+  .toc{ padding:80px 0 60px; }
+  .toc-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:36px; }
+  .toc-head h2{ font-family:'Bodoni Moda', serif; font-size:15px; letter-spacing:.22em; text-transform:uppercase; }
+  .toc-list{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--hair); border:1px solid var(--hair); }
+  .toc-item{
+    background:var(--paper); padding:26px 22px; position:relative;
+    transition:background .35s ease;
+  }
+  .toc-item:hover{ background:var(--paper-alt); }
+  .toc-item .num{ font-family:'Space Mono', monospace; font-size:11px; color:var(--oxblood); display:block; margin-bottom:14px;}
+  .toc-item .title{ font-family:'Bodoni Moda', serif; font-size:20px; display:block; margin-bottom:6px; }
+  .toc-item .desc{ font-size:12px; color:var(--stone); line-height:1.5; }
+  .toc-item .page{ position:absolute; right:22px; bottom:20px; font-family:'Space Mono', monospace; font-size:11px; color:var(--stone); }
+  @media(max-width:860px){ .toc-list{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:520px){ .toc-list{grid-template-columns:1fr;} }
+
+  /* ===== EDITOR'S LETTER ===== */
+  .letter{ padding:60px 0 100px; }
+  .letter .wrap{ display:grid; grid-template-columns:0.85fr 1.5fr; gap:64px; }
+  .letter-label{ position:sticky; top:100px; align-self:start; }
+  .letter-label .eyebrow{ display:block; margin-bottom:14px; }
+  .letter-label h2{ font-family:'Bodoni Moda', serif; font-size:34px; line-height:1.1; }
+  .letter-body p{ font-size:17px; line-height:1.85; color:var(--ink-soft); margin-bottom:20px; max-width:640px; }
+  .letter-body p:first-of-type::first-letter{
+    font-family:'Bodoni Moda', serif; font-size:64px; float:left; line-height:0.8;
+    padding:8px 10px 0 0; color:var(--oxblood); font-weight:600;
+  }
+  .letter-sign{ margin-top:34px; font-family:'Bodoni Moda', serif; font-style:italic; font-size:19px; }
+  .letter-sign small{ display:block; font-family:'Space Mono', monospace; font-style:normal; font-size:11px; color:var(--stone); margin-top:6px; text-transform:uppercase; letter-spacing:.08em;}
+  @media(max-width:860px){ .letter .wrap{grid-template-columns:1fr; gap:28px;} .letter-label{position:static;} }
+
+  /* ===== LOOKBOOK ===== */
+  .lookbook{ padding:20px 0 100px; }
+  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:40px; flex-wrap:wrap; gap:12px;}
+  .section-head h2{ font-family:'Bodoni Moda', serif; font-size:clamp(32px,4vw,48px); }
+  .section-head .eyebrow{ display:block; margin-bottom:10px; }
+  .lookbook-grid{ display:grid; grid-template-columns:repeat(6,1fr); grid-auto-rows:120px; gap:18px; }
+  .look-card{
+    position:relative; overflow:hidden; border:1px solid var(--hair);
+    background:var(--paper-alt); cursor:pointer;
+  }
+  .look-card .plate{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:14%; transition:transform .6s cubic-bezier(.2,.7,.3,1); }
+  .look-card:hover .plate{ transform:scale(1.06) rotate(-1deg); }
+  .look-card .plate svg{ width:100%; height:100%; color:var(--ink); }
+  .look-card .cap{
+    position:absolute; left:0; right:0; bottom:0; padding:16px 18px;
+    background:linear-gradient(to top, rgba(27,23,20,0.88), transparent);
+    color:var(--paper); transform:translateY(100%); transition:transform .4s ease;
+  }
+  .look-card:hover .cap{ transform:translateY(0); }
+  .look-card .cap .fig{ font-family:'Space Mono', monospace; font-size:10px; color:var(--brass); display:block; margin-bottom:4px; }
+  .look-card .cap .name{ font-family:'Bodoni Moda', serif; font-size:16px; }
+  .look-card .cap .price{ font-family:'Space Mono', monospace; font-size:11px; margin-top:4px; opacity:.85;}
+
+  .lc-1{ grid-column:span 3; grid-row:span 4; }
+  .lc-2{ grid-column:span 3; grid-row:span 3; }
+  .lc-3{ grid-column:span 2; grid-row:span 3; }
+  .lc-4{ grid-column:span 2; grid-row:span 2; }
+  .lc-5{ grid-column:span 2; grid-row:span 2; }
+  .lc-6{ grid-column:span 6; grid-row:span 3; }
+  @media(max-width:860px){
+    .lookbook-grid{ grid-template-columns:repeat(2,1fr); grid-auto-rows:160px; }
+    .lc-1,.lc-2,.lc-3,.lc-4,.lc-5,.lc-6{ grid-column:span 1; grid-row:span 2; }
+    .lc-1,.lc-6{ grid-column:span 2; }
+  }
+
+  /* ===== FEATURE / ATELIER ===== */
+  .feature{ padding:40px 0 110px; }
+  .feature .wrap{ display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center; }
+  .feature-visual{ background:var(--ink); padding:60px; display:flex; align-items:center; justify-content:center; }
+  .feature-visual svg{ width:80%; color:var(--paper); }
+  .feature-text .eyebrow{ display:block; margin-bottom:16px; }
+  .feature-text h2{ font-family:'Bodoni Moda', serif; font-size:clamp(30px,3.4vw,44px); line-height:1.15; margin-bottom:22px; }
+  .feature-text p{ font-size:16px; line-height:1.85; color:var(--ink-soft); margin-bottom:18px; }
+  .pull-quote{
+    font-family:'Bodoni Moda', serif; font-style:italic; font-size:24px; line-height:1.4;
+    border-left:2px solid var(--oxblood); padding-left:22px; margin:28px 0; color:var(--ink);
+  }
+  @media(max-width:860px){ .feature .wrap{grid-template-columns:1fr; gap:34px;} .feature-visual{order:-1; padding:36px;} }
+
+  /* ===== SHOP ===== */
+  .shop{ padding:20px 0 100px; }
+  .shop-tabs{ display:flex; gap:8px; margin-bottom:44px; flex-wrap:wrap; }
+  .shop-tab{
+    font-family:'Space Mono', monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    padding:10px 18px; border:1px solid var(--hair); background:transparent; cursor:pointer; color:var(--ink-soft);
+    transition:all .25s ease;
+  }
+  .shop-tab.active, .shop-tab:hover{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .shop-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--hair); border:1px solid var(--hair); }
+  .product{ background:var(--paper); padding:32px 28px 26px; transition:background .3s ease; }
+  .product:hover{ background:var(--paper-alt); }
+  .product-plate{ height:190px; display:flex; align-items:center; justify-content:center; margin-bottom:22px; }
+  .product-plate svg{ width:74%; height:100%; color:var(--ink); }
+  .product .cat{ font-family:'Space Mono', monospace; font-size:10px; color:var(--stone); text-transform:uppercase; letter-spacing:.1em; display:block; margin-bottom:8px;}
+  .product h3{ font-family:'Bodoni Moda', serif; font-size:21px; margin-bottom:4px; }
+  .product .mat{ font-size:13px; color:var(--stone); margin-bottom:14px; }
+  .product .row{ display:flex; justify-content:space-between; align-items:center; }
+  .product .price{ font-family:'Space Mono', monospace; font-size:13px; }
+  .product .add{ font-size:11px; letter-spacing:.08em; text-transform:uppercase; border-bottom:1px solid var(--ink); padding-bottom:2px; transition:opacity .2s ease; }
+  .product .add:hover{ opacity:.55; }
+  @media(max-width:860px){ .shop-grid{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:560px){ .shop-grid{ grid-template-columns:1fr; } }
+
+  /* ===== NEWSLETTER ===== */
+  .subscribe{ background:var(--ink); color:var(--paper); padding:90px 0; }
+  .subscribe .wrap{ text-align:center; }
+  .subscribe .eyebrow{ color:var(--brass); }
+  .subscribe h2{ font-family:'Bodoni Moda', serif; font-size:clamp(30px,4.2vw,52px); margin:16px 0 14px; }
+  .subscribe p{ color:#c9c2b7; font-size:15px; max-width:460px; margin:0 auto 34px; line-height:1.7; }
+  .sub-form{ display:flex; max-width:420px; margin:0 auto; border-bottom:1px solid rgba(239,233,225,0.4); padding-bottom:10px; }
+  .sub-form input{
+    flex:1; background:transparent; border:none; color:var(--paper); font-family:'Inter'; font-size:14px; outline:none;
+  }
+  .sub-form input::placeholder{ color:#8a8378; }
+  .sub-form button{
+    background:transparent; border:none; color:var(--brass); font-family:'Space Mono', monospace; font-size:11px;
+    letter-spacing:.1em; text-transform:uppercase; cursor:pointer;
+  }
+
+  /* ===== FOOTER / COLOPHON ===== */
+  footer{ padding:60px 0 40px; }
+  .colophon{ display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr; gap:32px; margin-bottom:50px; }
+  .colophon .brand{ font-family:'Bodoni Moda', serif; font-size:24px; margin-bottom:12px; }
+  .colophon p{ font-size:13px; color:var(--stone); line-height:1.7; max-width:240px; }
+  .colophon h4{ font-family:'Space Mono', monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--oxblood); margin-bottom:14px; }
+  .colophon .credit{ font-size:13px; color:var(--ink-soft); line-height:2; }
+  .colophon .credit span{ display:block; color:var(--stone); font-size:11px; }
+  .foot-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:22px; border-top:1px solid var(--hair); font-size:11px; color:var(--stone); font-family:'Space Mono', monospace; flex-wrap:wrap; gap:10px;}
+  @media(max-width:860px){ .colophon{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:520px){ .colophon{ grid-template-columns:1fr; } }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ transition:none; opacity:1; transform:none; }
+    .ticker-track{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="masthead-nav">
+  <div class="wrap">
+    <div class="nav-mark">THE FRONT</div>
+    <div class="nav-links">
+      <a href="#letter">Editor's Letter</a>
+      <a href="#lookbook">Lookbook</a>
+      <a href="#atelier">The Atelier</a>
+      <a href="#shop">Shop</a>
+    </div>
+    <div class="nav-meta">ISSUE No. 07<br>FW 2026</div>
+  </div>
+</nav>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="cover-kicker">
+      <span>THE FRONT — 계간 리빙 저널</span>
+      <span>SEOUL · PARIS</span>
+    </div>
+    <div class="cover-grid">
+      <div class="cover-lines">
+        <div>
+          <div class="cover-line-num">01</div>
+          <div class="cover-line-text">고요함을 <br>디자인하다</div>
+        </div>
+        <div>
+          <div class="cover-line-num">02</div>
+          <div class="cover-line-text">장인의 손,<br>브라스와 부클레</div>
+        </div>
+      </div>
+
+      <div>
+        <h1 class="cover-title">THE FRONT</h1>
+        <p class="cover-sub">The Furniture Issue — No. 07</p>
+        <div class="cover-illustration">
+          <svg viewBox="0 0 240 280" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.4">
+            <path d="M60 90 C60 60 100 45 120 45 C140 45 180 60 180 90 L180 150 L160 150 L160 100 C160 80 145 68 120 68 C95 68 80 80 80 100 L80 150 L60 150 Z"/>
+            <path d="M60 150 L60 200 M180 150 L180 200"/>
+            <path d="M50 200 L70 200 L60 240 Z M170 200 L190 200 L180 240 Z"/>
+            <path d="M60 150 C60 168 78 178 120 178 C162 178 180 168 180 150"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="cover-lines right">
+        <div>
+          <div class="cover-line-num">03</div>
+          <div class="cover-line-text">이번 시즌,<br>집이라는 무대</div>
+        </div>
+        <div>
+          <div class="cover-line-num">04</div>
+          <div class="cover-line-text">트래버틴과<br>월넛의 대화</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span>OAK <em>—</em> WALNUT <em>—</em> BOUCLÉ <em>—</em> BRASS <em>—</em> TRAVERTINE <em>—</em> LINEN <em>—</em> EBONY <em>—</em></span>
+    <span>OAK <em>—</em> WALNUT <em>—</em> BOUCLÉ <em>—</em> BRASS <em>—</em> TRAVERTINE <em>—</em> LINEN <em>—</em> EBONY <em>—</em></span>
+  </div>
+</div>
+
+<section class="toc reveal">
+  <div class="wrap">
+    <div class="toc-head"><h2>In This Issue</h2></div>
+    <div class="toc-list">
+      <a class="toc-item" href="#letter">
+        <span class="num">01</span>
+        <span class="title">Editor's Letter</span>
+        <span class="desc">가구를 대하는 우리의 태도에 관하여</span>
+        <span class="page">p. 03</span>
+      </a>
+      <a class="toc-item" href="#lookbook">
+        <span class="num">02</span>
+        <span class="title">Lookbook</span>
+        <span class="desc">FW26 컬렉션 여섯 개의 오브제</span>
+        <span class="page">p. 06</span>
+      </a>
+      <a class="toc-item" href="#atelier">
+        <span class="num">03</span>
+        <span class="title">The Atelier</span>
+        <span class="desc">장인이 머무는 작업실 이야기</span>
+        <span class="page">p. 11</span>
+      </a>
+      <a class="toc-item" href="#shop">
+        <span class="num">04</span>
+        <span class="title">Shop the Story</span>
+        <span class="desc">이번 호에 소개된 모든 오브제</span>
+        <span class="page">p. 14</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="letter" id="letter">
+  <div class="wrap">
+    <div class="letter-label reveal">
+      <span class="eyebrow">Editor's Letter</span>
+      <h2>가구는<br>말이 없지만,<br>공간은 말을 한다.</h2>
+    </div>
+    <div class="letter-body reveal">
+      <p>가구를 고른다는 것은 결국 자신이 어떤 사람인지 고백하는 일이다. 우리는 매 시즌, 유행이 아니라 태도를 담은 오브제를 찾는다. 손끝에 남는 목재의 결, 빛을 머금는 대리석의 온도, 앉는 순간 몸을 감싸는 부클레의 질감. 좋은 가구는 설명하지 않아도 그 공간에 사는 사람의 취향을 대신 말해준다.</p>
+      <p>이번 07호는 '고요함'이라는 한 단어에서 출발했다. 화려함을 덜어내고, 재료 본연의 물성과 비례에 집중한 여섯 개의 피스를 소개한다. 파리의 아틀리에에서 한 달에 단 몇 점만 제작되는 이 오브제들은, 유행을 좇지 않는 대신 오래 곁에 남는 법을 안다.</p>
+      <p>당신의 거실이, 침실이, 그리고 서재가 이번 호의 다음 페이지가 되기를 바란다.</p>
+      <div class="letter-sign">지은
+        <small>Creative Director, THE FRONT</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lookbook" id="lookbook">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">02 — The Collection</span>
+        <h2>Lookbook FW26</h2>
+      </div>
+      <div class="mono" style="font-size:12px; color:var(--stone);">SIX OBJECTS, ONE MOOD</div>
+    </div>
+
+    <div class="lookbook-grid reveal">
+      <div class="look-card lc-1">
+        <div class="plate">
+          <svg viewBox="0 0 200 260" stroke="currentColor" stroke-width="1.3" fill="none"><path d="M40 70 C40 45 70 30 100 30 C130 30 160 45 160 70 L160 140 L140 140 L140 78 C140 60 122 48 100 48 C78 48 60 60 60 78 L60 140 L40 140 Z"/><path d="M40 140 C40 160 65 172 100 172 C135 172 160 160 160 140"/><path d="M50 172 L50 220 M150 172 L150 220"/><path d="M40 220 L60 220 L50 240 Z M140 220 L160 220 L150 240 Z"/></svg>
+        </div>
+        <div class="cap"><span class="fig">FIG. 01</span><span class="name">라운지 체어 "느와르"</span><span class="price">부클레 · 월넛 — ₩3,280,000</span></div>
+      </div>
+
+      <div class="look-card lc-2">
+        <div class="plate">
+          <svg viewBox="0 0 220 200" stroke="currentColor" stroke-width="1.3" fill="none"><path d="M20 100 C20 80 35 70 55 70 L165 70 C185 70 200 80 200 100 L200 140 L20 140 Z"/><path d="M20 100 C10 100 10 130 20 130 M200 100 C210 100 210 130 200 130"/><path d="M60 70 L60 90 M110 70 L110 90 M160 70 L160 90"/><path d="M30 140 L30 165 M190 140 L190 165"/></svg>
+        </div>
+        <div class="cap"><span class="fig">FIG. 02</span><span class="name">모듈러 소파 "솔레유"</span><span class="price">프리미엄 리넨 — ₩7,450,000</span></div>
+      </div>
+
+      <div class="look-card lc-3">
+        <div class="plate">
+          <svg viewBox="0 0 180 220" stroke="currentColor" stroke-width="1.3" fill="none"><ellipse cx="90" cy="70" rx="75" ry="18"/><path d="M30 70 L45 190 M150 70 L135 190 M90 88 L90 190"/><path d="M35 190 L60 190 M120 190 L145 190 M75 190 L105 190"/></svg>
+        </div>
+        <div class="cap"><span class="fig">FIG. 03</span><span class="name">다이닝 테이블 "트래버틴"</span><span class="price">이탈리아산 대리석 — ₩5,900,000</span></div>
+      </div>
+
+      <div class="look-card lc-4">
+        <div class="plate">
+          <svg viewBox="0 0 120 220" stroke="currentColor" stroke-width="1.3" fill="none"><path d="M20 40 L100 40 L70 90 L50 90 Z"/><path d="M60 90 L60 200"/><path d="M40 200 L80 200"/></svg>
+        </div>
+        <div class="cap"><span class="fig">FIG. 04</span><span class="name">플로어 램프 "브라스 라인"</span><span class="price">황동 — ₩890,000</span></div>
+      </div>
+
+      <div class="look-card lc-5">
+        <div class="plate">
+          <svg viewBox="0 0 200 160" stroke="currentColor" stroke-width="1.3" fill="none"><rect x="30" y="40" width="140" height="80" rx="2"/><path d="M30 80 L170 80"/><circle cx="65" cy="60" r="3"/><circle cx="135" cy="60" r="3"/><circle cx="65" cy="100" r="3"/><circle cx="135" cy="100" r="3"/><path d="M45 120 L45 145 M155 120 L155 145"/></svg>
+        </div>
+        <div class="cap"><span class="fig">FIG. 05</span><span class="name">사이드보드 "에보니"</span><span class="price">흑단 · 브라스 — ₩4,200,000</span></div>
+      </div>
+
+      <div class="look-card lc-6">
+        <div class="plate">
+          <svg viewBox="0 0 420 160" stroke="currentColor" stroke-width="1.2" fill="none"><path d="M60 70 C60 50 85 40 110 40 C135 40 160 50 160 70 L160 110 L140 110 L140 76 C140 62 126 54 110 54 C94 54 80 62 80 76 L80 110 L60 110 Z"/><path d="M60 110 C60 122 82 130 110 130 C138 130 160 122 160 110"/>
+          <ellipse cx="300" cy="70" rx="65" ry="15"/><path d="M245 70 L258 130 M355 70 L342 130"/><path d="M250 130 L272 130 M328 130 L350 130"/></svg>
+        </div>
+        <div class="cap"><span class="fig">FIG. 06</span><span class="name">암체어 "뮤즈" &amp; 사이드 테이블 세트</span><span class="price">벨벳 — ₩2,150,000 부터</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feature" id="atelier">
+  <div class="wrap">
+    <div class="feature-visual reveal">
+      <svg viewBox="0 0 200 240" stroke="currentColor" stroke-width="1.3" fill="none"><path d="M40 60 C40 35 70 20 100 20 C130 20 160 35 160 60 L160 130 L140 130 L140 68 C140 48 122 36 100 36 C78 36 60 48 60 68 L60 130 L40 130 Z"/><path d="M40 130 C40 150 65 160 100 160 C135 160 160 150 160 130"/><path d="M50 160 L50 210 M150 160 L150 210"/><circle cx="100" cy="10" r="4"/></svg>
+    </div>
+    <div class="feature-text reveal">
+      <span class="eyebrow">03 — Behind the Object</span>
+      <h2>아틀리에 안에서,<br>시간을 들여 완성하다</h2>
+      <p>파리 근교의 작은 아틀리에에서는 한 명의 장인이 하나의 프레임을 처음부터 끝까지 책임진다. 월넛 원목을 재단하고, 부클레 원단을 손으로 재단해 씌우기까지 걸리는 시간은 평균 11일. 대량 생산이 흉내 낼 수 없는 밀도가 여기서 나온다.</p>
+      <div class="pull-quote">"우리는 트렌드를 만들지 않는다.<br>10년 뒤에도 그대로 아름다운 비례를 만들 뿐이다."</div>
+      <p>브라스 디테일은 하나하나 손으로 세공한 뒤, 시간이 지날수록 자연스러운 빈티지 톤으로 변화하도록 코팅을 최소화했다. 새것일 때보다 3년, 5년이 지났을 때 더 아름다워지는 것 — 그것이 메종 수아르가 정의하는 럭셔리다.</p>
+    </div>
+  </div>
+</section>
+
+<section class="shop" id="shop">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">04 — Shop the Story</span>
+        <h2>Shop the Collection</h2>
+      </div>
+    </div>
+
+    <div class="shop-tabs reveal">
+      <button class="shop-tab active" data-cat="all">전체</button>
+      <button class="shop-tab" data-cat="chair">체어</button>
+      <button class="shop-tab" data-cat="sofa">소파</button>
+      <button class="shop-tab" data-cat="table">테이블</button>
+      <button class="shop-tab" data-cat="light">조명</button>
+      <button class="shop-tab" data-cat="storage">스토리지</button>
+    </div>
+
+    <div class="shop-grid reveal" id="shopGrid">
+      <div class="product" data-cat="chair">
+        <div class="product-plate"><svg viewBox="0 0 200 260" stroke="currentColor" stroke-width="1.3" fill="none"><path d="M40 70 C40 45 70 30 100 30 C130 30 160 45 160 70 L160 140 L140 140 L140 78 C140 60 122 48 100 48 C78 48 60 60 60 78 L60 140 L40 140 Z"/><path d="M40 140 C40 160 65 172 100 172 C135 172 160 160 160 140"/><path d="M50 172 L50 220 M150 172 L150 220"/></svg></div>
+        <span class="cat">Chair — Lounge</span>
+        <h3>라운지 체어 "느와르"</h3>
+        <div class="mat">부클레 &amp; 월넛 프레임</div>
+        <div class="row"><span class="price">₩3,280,000</span><span class="add">장바구니</span></div>
+      </div>
+
+      <div class="product" data-cat="sofa">
+        <div class="product-plate"><svg viewBox="0 0 220 200" stroke="currentColor" stroke-width="1.3" fill="none"><path d="M20 100 C20 80 35 70 55 70 L165 70 C185 70 200 80 200 100 L200 140 L20 140 Z"/><path d="M20 100 C10 100 10 130 20 130 M200 100 C210 100 210 130 200 130"/><path d="M60 70 L60 90 M110 70 L110 90 M160 70 L160 90"/></svg></div>
+        <span class="cat">Sofa — Modular</span>
+        <h3>모듈러 소파 "솔레유"</h3>
+        <div class="mat">프리미엄 벨기에 리넨</div>
+        <div class="row"><span class="price">₩7,450,000</span><span class="add">장바구니</span></div>
+      </div>
+
+      <div class="product" data-cat="table">
+        <div class="product-plate"><svg viewBox="0 0 180 220" stroke="currentColor" stroke-width="1.3" fill="none"><ellipse cx="90" cy="70" rx="75" ry="18"/><path d="M30 70 L45 190 M150 70 L135 190 M90 88 L90 190"/></svg></div>
+        <span class="cat">Table — Dining</span>
+        <h3>다이닝 테이블 "트래버틴"</h3>
+        <div class="mat">이탈리아산 트래버틴 대리석</div>
+        <div class="row"><span class="price">₩5,900,000</span><span class="add">장바구니</span></div>
+      </div>
+
+      <div class="product" data-cat="light">
+        <div class="product-plate"><svg viewBox="0 0 120 220" stroke="currentColor" stroke-width="1.3" fill="none"><path d="M20 40 L100 40 L70 90 L50 90 Z"/><path d="M60 90 L60 200"/><path d="M40 200 L80 200"/></svg></div>
+        <span class="cat">Lighting — Floor</span>
+        <h3>플로어 램프 "브라스 라인"</h3>
+        <div class="mat">솔리드 황동, 리넨 쉐이드</div>
+        <div class="row"><span class="price">₩890,000</span><span class="add">장바구니</span></div>
+      </div>
+
+      <div class="product" data-cat="storage">
+        <div class="product-plate"><svg viewBox="0 0 200 160" stroke="currentColor" stroke-width="1.3" fill="none"><rect x="30" y="40" width="140" height="80" rx="2"/><path d="M30 80 L170 80"/><circle cx="65" cy="60" r="3"/><circle cx="135" cy="60" r="3"/></svg></div>
+        <span class="cat">Storage — Sideboard</span>
+        <h3>사이드보드 "에보니"</h3>
+        <div class="mat">흑단 베니어, 황동 손잡이</div>
+        <div class="row"><span class="price">₩4,200,000</span><span class="add">장바구니</span></div>
+      </div>
+
+      <div class="product" data-cat="chair">
+        <div class="product-plate"><svg viewBox="0 0 200 240" stroke="currentColor" stroke-width="1.3" fill="none"><path d="M40 60 C40 35 70 20 100 20 C130 20 160 35 160 60 L160 130 L140 130 L140 68 C140 48 122 36 100 36 C78 36 60 48 60 68 L60 130 L40 130 Z"/><path d="M40 130 C40 150 65 160 100 160 C135 160 160 150 160 130"/></svg></div>
+        <span class="cat">Chair — Armchair</span>
+        <h3>암체어 "뮤즈"</h3>
+        <div class="mat">이탈리안 벨벳</div>
+        <div class="row"><span class="price">₩2,150,000</span><span class="add">장바구니</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="subscribe reveal">
+  <div class="wrap">
+    <span class="eyebrow">Subscribe</span>
+    <h2>매거진처럼, 시즌마다<br>새로운 이야기를 받아보세요</h2>
+    <p>연 4회 발행되는 메종 수아르 저널 — 신제품, 아틀리에 이야기, 그리고 구독자 한정 프리뷰를 이메일로 전해드립니다.</p>
+    <form class="sub-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='구독 완료';">
+      <input type="email" placeholder="이메일 주소를 입력하세요" required>
+      <button type="submit">구독하기 →</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="colophon">
+      <div>
+        <div class="brand">THE FRONT</div>
+        <p>2016년, 서울과 파리 두 도시를 오가며 시작된 작은 리빙 스튜디오. 유행이 아닌 태도를 만드는 가구를 소개합니다.</p>
+      </div>
+      <div>
+        <h4>Colophon</h4>
+        <div class="credit">창훈 <span>Creative Director</span></div>
+        <div class="credit">다은 <span>Head of Atelier</span></div>
+        <div class="credit">유진 <span>Editor</span></div>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <div class="credit">서울 강남구 도산대로 45<br><span>매일 11:00 – 20:00</span></div>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <div class="credit">Instagram <span>@maisonsoir</span></div>
+        <div class="credit">Pinterest <span>THE FRONT</span></div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 THE FRONT. ALL RIGHTS RESERVED.</span>
+      <span>ISSUE NO. 07 — PRINTED DIGITALLY</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+  // shop filter
+  const tabs = document.querySelectorAll('.shop-tab');
+  const products = document.querySelectorAll('.product');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const cat = tab.dataset.cat;
+      products.forEach(p=>{
+        p.style.display = (cat==='all' || p.dataset.cat===cat) ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
