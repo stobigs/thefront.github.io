@@ -166,7 +166,7 @@
   .spec{display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); font-size:13px;}
   .spec:last-of-type{border-bottom:1px solid var(--line);}
   .spec span:first-child{color:var(--mute); letter-spacing:.04em; text-transform:uppercase; font-size:10.5px;}
-  .desc{margin:22px 0 28px; color:var(--ink-soft); font-size:13.5px; line-height:1.8; max-width:48ch;}
+  .desc{white-space:pre-line; margin:22px 0 28px; color:var(--ink-soft); font-size:13.5px; line-height:1.8; max-width:48ch;}
   .ctarow{display:flex; flex-direction:column; gap:14px; align-items:flex-start;}
   .btn{display:inline-flex; align-items:center; justify-content:center; padding:0 0 4px; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:600; border:none; border-bottom:1px solid var(--ink);}
   .btn-solid, .btn-outline{background:none; color:var(--ink);}
@@ -350,6 +350,7 @@
   var CAT_LABEL = {sofa:'Sofa', chair:'Chair', cabinet:'Cabinet', table:'Table', accessory:'Accessory'};
 
   var PRODUCTS = [
+    {id:'ig-DdnfT_znwjw', cat:'sofa', name:"Cassina Maralunga 2.5 seater", size:"가로 190cm 세로 85cm 높이 73cm 앉은 높이 45cm", desc:"이탈리아 Cassina를 대표하는 아이코닉 소파 Maralunga입니다.\n이탈리아 건축가이자 디자이너인 Vico Magistretti가 1973년 디자인한 모델로, 부드럽고 볼륨감 있는 형태와 독특한 등받이 조절 기능이 특징입니다.\n\n등받이는 내부에 적용된 Cassina의 메커니즘을 통해 로우백과 하이백 형태로 자유롭게 전환할 수 있어 편안한 착석감을 제공합니다.\n\n이번에 입고된 마라룽가는 카키 베이스 컬러에 스트라이프 패턴이 적용된 패브릭 모델로, 2.5인용 사이즈 특유의 컴팩트한 비율을 갖추고 있습니다. 넓은 3인용 모델에 비해 공간에 부담 없이 배치할 수 있어 다양한 공간에 유연하게 활용하기 좋은 모델입니다.\n\n헤드레스트 정상적으로 작동하며 패브릭 상태는 좋은 컨디션 유지하고 있습니다.", status:'new', img:'IMG_MARALUNGA', ig:'https://www.instagram.com/p/DdnfT_znwjw/'},
     {id:'p1', cat:'chair', name:'Oak High-Back Reclining Lounge Chair', size:'사이즈 확인 중', desc:'오크 원목 프레임에 블루 패브릭을 매치한 하이백 리클라이닝 라운지 체어. 등받이 각도 조절이 가능합니다.', status:'new', img:'IMG_CHAIR1'},
     {id:'p2', cat:'sofa', name:'Low-Profile 3-Seater Sofa', size:'사이즈 확인 중', desc:'블랙 메탈 캔틸레버 베이스와 차콜 패브릭이 어우러진 암리스 3인 소파.', status:'available', img:'IMG_SOFA1'},
     {id:'p4', cat:'table', name:'Compact Dining Table Set (3 Chairs Included)', size:'사이즈 확인 중', desc:'원목 베니어 마감의 라운드 테이블과 전용 체어 3개로 구성된 콤팩트 다이닝 세트.', status:'new', img:'IMG_TABLE2'},
@@ -429,6 +430,7 @@
         '<div class="spec"><span>상태</span><span>' + (p.status === 'reserved' ? '예약중' : (p.status === 'new' ? '신규 입고' : '판매중')) + '</span></div>' +
         '<div class="spec"><span>가격</span><span>가격 문의</span></div>' +
         '<p class="desc">' + p.desc + '</p>' +
+        (p.ig ? '<p class="desc" style="margin-top:-12px;"><a href="' + p.ig + '" target="_blank" rel="noopener" style="text-decoration:underline;">인스타그램 게시물 보기</a></p>' : '') +
         '<div class="ctarow">' +
           '<a class="btn btn-solid" href="https://www.instagram.com/thefrontvintage" target="_blank" rel="noopener">인스타그램 DM으로 문의</a>' +
           '<a class="btn btn-outline" href="sms:01049251116">문자로 문의하기</a>' +
@@ -501,6 +503,7 @@
 
 <script>
 window.THEFRONT_INIT({
+  IMG_MARALUNGA: 'images/ig-maralunga.jpg',
   IMG_CHAIR1: 'images/chair1.jpg',
   IMG_SOFA1: 'images/sofa1.jpg',
   IMG_TABLE2: 'images/table2.jpg',
