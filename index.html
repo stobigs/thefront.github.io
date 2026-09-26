@@ -121,8 +121,9 @@
     gap:clamp(48px,9vw,96px) clamp(24px,4vw,48px);
     padding:clamp(20px,3vw,32px) clamp(20px,4vw,56px) clamp(80px,10vw,140px);
   }
-  @media (min-width:700px){ .grid{grid-template-columns:repeat(2,1fr);} }
-  @media (min-width:1180px){ .grid{grid-template-columns:repeat(3,1fr); gap:clamp(56px,5vw,88px) clamp(32px,3vw,56px);} }
+  /* one product per row on every screen; photo capped so it always fits the viewport height */
+  .grid{justify-items:center;}
+  .grid > .tile{width:min(100%, 820px, calc(82vh * 0.8));}
 
   .tile{background:none; border:none; padding:0; text-align:left; color:inherit; font-family:inherit; cursor:pointer;}
   .tile-media{position:relative; aspect-ratio:4/5; background:var(--paper-raised); overflow:hidden; display:flex; align-items:center; justify-content:center;}
