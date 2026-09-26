@@ -407,7 +407,7 @@
     var list = PRODUCTS.slice(0, 8);
     list.forEach(function(p, i){
       grid.appendChild(makeTile(p));
-      if(i === 3 && p.img){ grid.appendChild(breakerEl(list[1])); }
+      /* editorial breaker removed: one-per-row layout already shows each photo large */
     });
   }
 
